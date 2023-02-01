@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-java
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-java
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: user-java
+          image: registryekd7054.azurecr.io/tripinsights/user-java:1.0
+          env:
+          - name: SQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: ohsecrets
+                key: SQL_USER
+          - name: SQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ohsecrets
+                key: SQL_PASSWORD
+          - name: SQL_SERVER
+            valueFrom:
+              secretKeyRef:
+                name: ohsecrets
+                key: SQL_SERVER
+          - name: SQL_DBNAME
+            valueFrom:
+              secretKeyRef:
+                name: ohsecrets
+                key: SQL_DBNAME
+          
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: '0'
+              memory: '0'
+            limits:
+              cpu: '256'
+              memory: 11400G
+            
