@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi-service
+  namespace: default
+spec:
+  ports:
+    - targetPort: 80
+      name: poi
+      port: 80
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: poi

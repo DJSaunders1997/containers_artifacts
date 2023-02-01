@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi-deployment
+  labels:
+    app: poi-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: poi
+  template:
+    metadata:
+      labels:
+        app: poi
+    spec:
+      containers:
+      - name: poi
+        image: registryekd7054.azurecr.io/tripinsights/poi:1.0
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: ohsecrets
+              key: SQL_USER
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ohsecrets
+              key: SQL_PASSWORD
+        - name: SQL_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: ohsecrets
+              key: SQL_SERVER
+        - name: SQL_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: ohsecrets
+              key: SQL_DBNAME
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        ports:
+        - containerPort: 80
