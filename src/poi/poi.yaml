@@ -24,22 +24,22 @@ spec:
         - name: SQL_USER
           valueFrom:
             secretKeyRef:
-              name: ohsecrets
+              name: ohsecretsakv
               key: SQL_USER
         - name: SQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: ohsecrets
+              name: ohsecretsakv
               key: SQL_PASSWORD
         - name: SQL_SERVER
           valueFrom:
             secretKeyRef:
-              name: ohsecrets
+              name: ohsecretsakv
               key: SQL_SERVER
         - name: SQL_DBNAME
           valueFrom:
             secretKeyRef:
-              name: ohsecrets
+              name: ohsecretsakv
               key: SQL_DBNAME
         resources:
           requests:
