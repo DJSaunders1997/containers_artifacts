@@ -22,7 +22,7 @@ spec:
           image: registryekd7054.azurecr.io/tripinsights/tripviewer:1.0
           env:
             - name: USERPROFILE_API_ENDPOINT
-              value: "http://userprofile.api.svc.cluster.local"
+              value: "http://userprofiles.api.svc.cluster.local"
             - name: TRIPS_API_ENDPOINT
               value: "http://trips.api.svc.cluster.local"
           ports:
