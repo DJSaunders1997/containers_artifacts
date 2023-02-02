@@ -13,6 +13,6 @@ roleRef:
 subjects:
 - kind: Group
   namespace: api
-  name: groupObjectId
+  name: da73f1c7-d0c5-4078-8ebe-f1a079f12685
 
 #TODO: from website: replace groupObjectId with the group object ID output from the previous command.
