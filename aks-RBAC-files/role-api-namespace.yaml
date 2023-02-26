@@ -1,0 +1,17 @@
+# Taken from 
+#https://learn.microsoft.com/en-us/azure/aks/azure-ad-rbac?tabs=portal
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-user-full-access
+  namespace: api
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["batch"]
+  resources:
+  - jobs
+  - cronjobs
+  verbs: ["*"]

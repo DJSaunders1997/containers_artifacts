@@ -1,11 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: acr-trips-deployment
+  name: trips
+  namespace: api
   labels:
     app: trips
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: trips
@@ -17,27 +18,21 @@ spec:
       containers:
       - name: trips
         image: registryekd7054.azurecr.io/tripinsights/trips:1.0
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/secrets"
+          readOnly: true
         ports:
         - containerPort: 80
         env:
-        - name: SQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-              key: SQL_USER
-        - name: SQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-              key: SQL_PASSWORD
-        - name: SQL_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-              key: SQL_SERVER
-        - name: SQL_DBNAME
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-        - name: OPENAPI_DOCS_URI
-          value: "Kubernetes"
+        - name: DEBUG_LOGGING
+          value: "true"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-kvname-user-msi"

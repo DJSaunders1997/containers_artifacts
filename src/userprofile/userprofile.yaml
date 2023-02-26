@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: acr-userprofiles-deployment
+  name: userprofiles
+  namespace: api
   labels:
     app: userprofiles
 spec:
@@ -17,26 +18,17 @@ spec:
       containers:
       - name: userprofiles
         image: registryekd7054.azurecr.io/tripinsights/userprofile:1.0
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/secrets"
+          readOnly: true
         ports:
         - containerPort: 80
-        env:
-        - name: SQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-              key: SQL_USER
-        - name: SQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-              key: SQL_PASSWORD
-        - name: SQL_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
-              key: SQL_SERVER
-        - name: SQL_DBNAME
-          valueFrom:
-            secretKeyRef:
-              name: ohsecrets
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-kvname-user-msi"
         
